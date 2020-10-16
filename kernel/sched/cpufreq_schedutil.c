@@ -367,6 +367,7 @@ static void sugov_update_single(struct update_util_data *hook, u64 time,
 #ifdef CONFIG_MTK_TINYSYS_SSPM_SUPPORT
 	int cid;
 #endif
+	unsigned int cached_freq = sg_policy->cached_raw_freq;
 
 	sugov_set_iowait_boost(sg_cpu, time, flags);
 	sg_cpu->last_update = time;
@@ -405,8 +406,9 @@ static void sugov_update_single(struct update_util_data *hook, u64 time,
 		 */
 		if (busy && next_f < sg_policy->next_freq) {
 			next_f = sg_policy->next_freq;
-			/* clear cache when it's bypassed */
-			sg_policy->cached_raw_freq = 0;
+
+			/* Reset cached freq as next_freq has changed */
+			sg_policy->cached_raw_freq = cached_freq;
 		}
 	}
 
