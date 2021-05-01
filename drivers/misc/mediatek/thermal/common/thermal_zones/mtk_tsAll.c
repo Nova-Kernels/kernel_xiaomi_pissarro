@@ -72,7 +72,7 @@ static int tsallts_debug_log = 0;
 
 #define tsallts_dprintk(fmt, args...)   \
 	do {                                    \
-		if (tsallts_debug_log) {                \
+		if (tsallts_debug_log != 0) {                \
 			pr_debug("[Thermal/TZ/CPUALL]" fmt, ##args);\
 		}                                   \
 	} while (0)
@@ -80,7 +80,7 @@ static int tsallts_debug_log = 0;
 #if AUTO_GEN_COOLERS
 #define clnothings_dprintk(fmt, args...)   \
 	do {                                    \
-		if (tsallts_debug_log) {                \
+		if (tsallts_debug_log != 0) {                \
 			pr_debug("[Thermal/TZ/CLNOTHINGS]" fmt, ##args);\
 		}                                   \
 	} while (0)
