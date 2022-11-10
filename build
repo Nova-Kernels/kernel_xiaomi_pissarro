@@ -295,12 +295,13 @@ Build_Azure() {
     make  -j$(nproc --all)  O=out \
                             PATH="$Azure/bin:/usr/bin:$PATH" \
                             CC=clang \
-							AR=llvm-ar\
+			    AR=llvm-ar\
                             NM=llvm-nm \
                             OBJCOPY=llvm-objcopy \
                             OBJDUMP=llvm-objdump \
                             STRIP=llvm-strip \
-                            CROSS_COMPILE=aarch64-linux-gnu- \
+                            LD=ld.lld
+			    CROSS_COMPILE=aarch64-linux-gnu- \
                             CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 }
 
