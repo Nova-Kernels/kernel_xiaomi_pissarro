@@ -692,7 +692,6 @@ int bt_close(struct hci_dev *hdev)
 static int bt_setup(struct hci_dev *hdev)
 {
 	int ret = 0;
-	struct btmtk_dev *bdev = hci_get_drvdata(hdev);
 
 	BTMTK_INFO("%s", __func__);
 

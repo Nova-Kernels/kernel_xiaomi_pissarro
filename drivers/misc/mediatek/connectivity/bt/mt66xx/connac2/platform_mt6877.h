@@ -944,8 +944,7 @@ static inline void bgfsys_dump_uart_pta_pready_status(void)
 static void bgfsys_dump_conn_wt_slp_ctrl_reg(void)
 {
 	uint8_t *base = NULL;
-	uint32_t value = 0, i = 0;
-
+	uint32_t i = 0;
 	base = ioremap_nocache(0x18005100, 0x100);
 	if (base) {
 		for(i = 0x20; i <= 0x34; i+=4)

@@ -161,7 +161,6 @@ static int btmtk_fb_notifier_callback(struct notifier_block
 {
 	struct fb_event *evdata = data;
 	int32_t blank = 0;
-	int32_t val = 0;
 
 	if ((event != FB_EVENT_BLANK))
 		return 0;
@@ -210,9 +209,6 @@ static struct notifier_block bt_pm_notifier;
 static int btmtk_pm_notifier_callback(struct notifier_block *nb,
 		unsigned long event, void *dummy)
 {
-	int32_t val = 0, i = 0;
-	int32_t new_state = 0;
-
 	BTMTK_INFO("%s: bt_state[%d], event[%ld], conninfra_reg_readable[%d]",
 			__func__, g_bdev->bt_state, event, conninfra_reg_readable());
 
@@ -1366,7 +1362,7 @@ int32_t btmtk_tx_thread(void * arg)
 	struct bt_psm_ctrl *psm = &bdev->psm;
 	int32_t sleep_ret = 0, wakeup_ret = 0, ret, ii;
 	struct sk_buff *skb;
-	int skb_len, btif_pending_data;
+	int skb_len;
 	char state_tag[20] = "";
 
 	BTMTK_INFO("%s start running...", __func__);

@@ -350,6 +350,8 @@ int bt_dbg_met_start_stop(int par1, int par2, int par3)
 {
 	uint32_t val = 0, star_addr = 0, end_addr = 0;
 	int res = 0;
+	struct conn_metlog_info info;
+	unsigned int emi_base;
 
 	BTMTK_INFO("%s, par2 = %d", __func__, par2);
 	/* reference parameter:
@@ -379,8 +381,6 @@ int bt_dbg_met_start_stop(int par1, int par2, int par3)
 		bt_dbg_ap_reg_write(0, 0x18821400, (val & 0xFFFFFFFC) | 0x00000003); // BGF_ON_MET_CTL0[1:0] = 0x03
 
 		// start MET test
-		struct conn_metlog_info info;
-		unsigned int emi_base;
 		conninfra_get_phy_addr(&emi_base, NULL);
 
 		info.type = CONNDRV_TYPE_BT;
