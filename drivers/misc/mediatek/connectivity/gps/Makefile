@@ -15,17 +15,14 @@ MTK_PLATFORM := $(subst ",,$(CONFIG_MTK_PLATFORM))
 MTK_PLATFORM := $(subst ",,$(CONFIG_MTK_PLATFORM))
 ifeq ($(CONFIG_MTK_GPS_SUPPORT), y)
 
-ifeq ($(AUTOCONF_H),)
-    $(error AUTOCONF_H is not defined)
+ifneq ($(KERNEL_OUT),)
+    ccflags-y += -imacros $(KERNEL_OUT)/include/generated/autoconf.h
 endif
 
-ccflags-y += -imacros $(AUTOCONF_H)
 ifndef TOP
     TOP := $(srctree)/..
 endif
-ifeq ($(TARGET_BUILD_VARIANT),$(filter $(TARGET_BUILD_VARIANT),userdebug user))
-    ldflags-y += -s
-endif
+ldflags-y += -s
 
 # Force build fail on modpost warning
 KBUILD_MODPOST_FAIL_ON_WARNINGS := y
