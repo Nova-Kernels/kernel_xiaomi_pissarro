@@ -1440,8 +1440,7 @@ _modinst_:
 	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modinst
 
 # This depmod is only for convenience to give the initial
-# boot a modules.dep even before / is mounted read
--write.  However the
+# boot a modules.dep even before / is mounted read-write.  However the
 # boot script depmod is the master version.
 PHONY += _modinst_post
 _modinst_post: _modinst_
