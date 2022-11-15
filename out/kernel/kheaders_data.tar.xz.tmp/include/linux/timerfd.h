@@ -1,0 +1,15 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+
+#ifndef _LINUX_TIMERFD_H
+#define _LINUX_TIMERFD_H
+
+#include <uapi/linux/timerfd.h>
+
+#define TFD_SHARED_FCNTL_FLAGS (TFD_CLOEXEC | TFD_NONBLOCK)
+
+#define TFD_CREATE_FLAGS TFD_SHARED_FCNTL_FLAGS
+
+#define TFD_SETTIME_FLAGS (TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET)
+
+#endif 

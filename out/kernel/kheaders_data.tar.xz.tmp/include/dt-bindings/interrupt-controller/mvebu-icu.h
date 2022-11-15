@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+
+#ifndef _DT_BINDINGS_INTERRUPT_CONTROLLER_MVEBU_ICU_H
+#define _DT_BINDINGS_INTERRUPT_CONTROLLER_MVEBU_ICU_H
+
+
+
+#define ICU_GRP_NSR		0x0
+#define ICU_GRP_SR		0x1
+#define ICU_GRP_SEI		0x4
+#define ICU_GRP_REI		0x5
+
+#endif

@@ -60,10 +60,11 @@ ccflags-y += -I$(srctree)/drivers/devfreq
 ###############################################################################
 
 MODULE_NAME := gps_drv
-obj-m += $(MODULE_NAME).o
+
+obj-y += $(MODULE_NAME).o
 
 GPS_DRV_CONTROL_LNA := n
-GPS_DL_SUPPORT := n
+SELECT_GPS_DL_DRV := n
 GPS_DL_HAS_MOCK := n
 GPS_DL_HAS_CONNINFRA_DRV := n
 GPS_SRC_FOLDER := $(srctree)/drivers/misc/mediatek/connectivity/gps
@@ -80,37 +81,35 @@ ccflags-y += -DCONFIG_GPS_CTRL_LNA_SUPPORT
 GPS_DRV_CONTROL_LNA := y
 endif
 
-ifeq ($(CONFIG_MACH_MT6877),y)
-GPS_DL_SUPPORT := y
-GPS_DL_PLATFORM := mt6877
-endif
 ifeq ($(CONFIG_MACH_MT6885),y)
-GPS_DL_SUPPORT := y
-GPS_DL_PLATFORM := connac2_0
-endif
-ifeq ($(CONFIG_MACH_MT6893),y)
-GPS_DL_SUPPORT := y
-GPS_DL_PLATFORM := connac2_0
-endif
-
-ifeq ($(CONFIG_MTK_COMBO_CHIP_CONSYS_6877),y)
-GPS_DL_HAS_CONNINFRA_DRV := y
-endif
+SELECT_GPS_DL_DRV := y
+ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/hw/inc/connac2_0
+ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/hw/inc/connac2_0/coda_gen
 ifeq ($(CONFIG_MTK_COMBO_CHIP_CONSYS_6885),y)
 GPS_DL_HAS_CONNINFRA_DRV := y
 endif
 ifeq ($(CONFIG_MTK_COMBO_CHIP_CONSYS_6893),y)
 GPS_DL_HAS_CONNINFRA_DRV := y
 endif
+endif
 
-ifeq ($(GPS_DL_SUPPORT),y) # New GPS driver with L1+L5 support
-ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/plat/$(GPS_DL_PLATFORM)/inc
-ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/hw/inc/$(GPS_DL_PLATFORM)
-ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/hw/inc/$(GPS_DL_PLATFORM)/coda_gen
+ifeq ($(CONFIG_MACH_MT6893),y)
+SELECT_GPS_DL_DRV := y
+# For MT6893, the CODA is same as connac2_0
+ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/hw/inc/connac2_0
+ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/hw/inc/connac2_0/coda_gen
+ifeq ($(CONFIG_MTK_COMBO_CHIP_CONSYS_6885),y)
+GPS_DL_HAS_CONNINFRA_DRV := y
+endif
+ifeq ($(CONFIG_MTK_COMBO_CHIP_CONSYS_6893),y)
+GPS_DL_HAS_CONNINFRA_DRV := y
+endif
+endif
+
+ifeq ($(SELECT_GPS_DL_DRV),y) # New GPS driver with L1+L5 support
 ifeq ($(GPS_DL_HAS_CONNINFRA_DRV),y)
 CONNINFRA_SRC_FOLDER := $(srctree)/drivers/misc/mediatek/connectivity/conninfra
 ccflags-y += -I$(CONNINFRA_SRC_FOLDER)/include
-ccflags-y += -I$(CONNINFRA_SRC_FOLDER)/debug_utility/metlog
 ccflags-y += -DGPS_DL_HAS_CONNINFRA_DRV=1
 endif
 
@@ -132,7 +131,6 @@ $(MODULE_NAME)-objs += data_link/lib/gps_dl_time_tick.o
 $(MODULE_NAME)-objs += data_link/lib/gps_dl_name_list.o
 
 $(MODULE_NAME)-objs += data_link/hw/gps_dl_hw_conn_infra.o
-$(MODULE_NAME)-objs += data_link/hw/gps_dl_hw_semaphore.o
 $(MODULE_NAME)-objs += data_link/hw/gps_dl_hw_bgf.o
 $(MODULE_NAME)-objs += data_link/hw/gps_dl_hw_gps.o
 $(MODULE_NAME)-objs += data_link/hw/gps_dl_hw_power_ctrl.o
@@ -148,14 +146,7 @@ $(MODULE_NAME)-objs += data_link/hal/gps_dl_dma.o
 $(MODULE_NAME)-objs += data_link/hal/gps_dl_mcub.o
 $(MODULE_NAME)-objs += data_link/hal/gps_dl_zbus.o
 $(MODULE_NAME)-objs += data_link/hal/gps_dl_conn_infra.o
-$(MODULE_NAME)-objs += data_link/hal/gps_dl_hal_met2_0.o
 
-$(MODULE_NAME)-objs += data_link/link/gps_dl_link_event_proc.o
-$(MODULE_NAME)-objs += data_link/link/gps_dl_link_hal_ctrl.o
-$(MODULE_NAME)-objs += data_link/link/gps_dl_link_irq_ctrl.o
-$(MODULE_NAME)-objs += data_link/link/gps_dl_link_state.o
-$(MODULE_NAME)-objs += data_link/link/gps_dl_link_sync.o
-$(MODULE_NAME)-objs += data_link/link/gps_dl_link_util.o
 $(MODULE_NAME)-objs += data_link/link/gps_dl_subsys_reset.o
 $(MODULE_NAME)-objs += data_link/gps_each_link.o
 
@@ -168,11 +159,6 @@ $(MODULE_NAME)-objs += data_link/linux/gps_dl_emi.o
 $(MODULE_NAME)-objs += data_link/linux/gps_dl_ctrld.o
 $(MODULE_NAME)-objs += data_link/linux/gps_dl_procfs.o
 $(MODULE_NAME)-objs += data_link/linux/gps_dl_osal.o
-
-$(MODULE_NAME)-objs += data_link/plat/$(GPS_DL_PLATFORM)/gps_dl_hw_dep_bgf.o
-$(MODULE_NAME)-objs += data_link/plat/$(GPS_DL_PLATFORM)/gps_dl_hw_dep_gps.o
-$(MODULE_NAME)-objs += data_link/plat/$(GPS_DL_PLATFORM)/gps_dl_hw_dep_debug.o
-$(MODULE_NAME)-objs += data_link/plat/$(GPS_DL_PLATFORM)/gps_dl_hw_dep_met2_0.o
 
 ifeq ($(GPS_DL_HAS_MOCK),y)
 $(MODULE_NAME)-objs += data_link_mock/mock/gps_mock_mvcd.o

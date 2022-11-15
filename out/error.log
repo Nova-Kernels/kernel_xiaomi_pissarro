@@ -1,0 +1,19 @@
+../drivers/misc/mediatek/connectivity/gps/gps_emi.c:152:6: error: 'EMI_MPU_PROTECTION_IS_READY' is not defined, evaluates to 0 [-Werror,-Wundef]
+        #if EMI_MPU_PROTECTION_IS_READY
+            ^
+../drivers/misc/mediatek/connectivity/gps/gps_emi.c:164:5: error: 'EMI_MPU_PROTECTION_IS_READY' is not defined, evaluates to 0 [-Werror,-Wundef]
+#if EMI_MPU_PROTECTION_IS_READY
+    ^
+../drivers/misc/mediatek/connectivity/gps/gps_emi.c:230:7: error: 'EMI_MPU_PROTECTION_IS_READY' is not defined, evaluates to 0 [-Werror,-Wundef]
+                #if EMI_MPU_PROTECTION_IS_READY
+                    ^
+../drivers/misc/mediatek/connectivity/gps/gps_emi.c:249:7: error: 'EMI_MPU_PROTECTION_IS_READY' is not defined, evaluates to 0 [-Werror,-Wundef]
+                #if EMI_MPU_PROTECTION_IS_READY
+[?2004h]0;lucifer@NewEra: ~/kernels/pi[01;32mlucifer@NewEra[00m:[01;34m~/kernels/pi[00m$ nano drivers/misc/mediatek/connectivity/gps/gps_emi.c
+[?2004l[?2004h]0;lucifer@NewEra: ~/kernels/pi[01;32mlucifer@NewEra[00m:[01;34m~/kernels/pi[00m$ nano drivers/misc/mediatek/connectivity/gps/gps_emi.c
+[?2004l[?2004h]0;lucifer@NewEra: ~/kernels/pi[01;32mlucifer@NewEra[00m:[01;34m~/kernels/pi[00m$ nano drivers/misc/mediatek/connectivity/gps/gps_emi.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cout/error.log[Kdrivers/misc/mediatek/connectivity/gps/gps_emi.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cout/error.log[K
+[?2004l[?2004h]0;lucifer@NewEra: ~/kernels/pi[01;32mlucifer@NewEra[00m:[01;34m~/kernels/pi[00m$ nano out/error.log
+[?2004l[?2004h]0;lucifer@NewEra: ~/kernels/pi[01;32mlucifer@NewEra[00m:[01;34m~/kernels/pi[00m$ nano nano
+[?2004l[?2004h]0;lucifer@NewEra: ~/kernels/pi[01;32mlucifer@NewEra[00m:[01;34m~/kernels/pi[00m$ nano nano[K[K[K[KMakefile
+[?2004l[?2004h]0;lucifer@NewEra: ~/kernels/pi[01;32mlucifer@NewEra[00m:[01;34m~/kernels/pi[00m$ girt [K[K[Kt add * 
+[?2004l

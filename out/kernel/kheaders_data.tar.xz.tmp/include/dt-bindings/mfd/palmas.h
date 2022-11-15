@@ -1,0 +1,12 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+
+#ifndef __DT_BINDINGS_PALMAS_H
+#define __DT_BINDINGS_PALMAS_H
+
+
+#define PALMAS_EXT_CONTROL_PIN_ENABLE1	1
+#define PALMAS_EXT_CONTROL_PIN_ENABLE2	2
+#define PALMAS_EXT_CONTROL_PIN_NSLEEP	3
+
+#endif 
