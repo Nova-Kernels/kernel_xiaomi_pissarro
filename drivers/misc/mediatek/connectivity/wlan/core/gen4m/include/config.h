@@ -1100,7 +1100,7 @@
 
 #define CFG_SUPPORT_TX_LATENCY_STATS 1
 
-#define CFG_SUPPORT_LLS 1
+#define CFG_SUPPORT_LLS 0
 
 #define CFG_REPORT_TX_RATE_FROM_LLS 0
 /*------------------------------------------------------------------------------
