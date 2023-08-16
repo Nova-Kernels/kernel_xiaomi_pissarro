@@ -67,7 +67,7 @@ static int trip_temp[10] = { 120000, 110000, 100000, 90000, 80000,
 				70000, 65000, 60000, 55000, 50000 };
 
 static struct thermal_zone_device *thz_dev;
-static int mtkts_btslcd_debug_log;
+static int mtkts_btslcd_debug_log = 0;
 static int kernelmode;
 static int g_THERMAL_TRIP[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -1180,7 +1180,7 @@ void mtkts_btslcd_prepare_table(int table_num)
 		break;
 	}
 
-	pr_notice("[Thermal/TZ/BTSLCD] %s table_num=%d\n",
+	pr_debug("[Thermal/TZ/BTSLCD] %s table_num=%d\n",
 						__func__, table_num);
 
 #if 0
