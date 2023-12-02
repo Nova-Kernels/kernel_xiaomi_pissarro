@@ -6,7 +6,7 @@
 
 SECONDS=0 # builtin bash timer
 KERNEL_PATH=$PWD
-AK3_DIR="$HOME/tc/Anykernel"
+AK3_DIR="$HOME/Anykernel"
 DEFCONFIG="pissarro_user_defconfig"
 export KBUILD_BUILD_USER=Abdul7852
 export KBUILD_BUILD_HOST=NoVA
@@ -86,7 +86,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
                 cp $kernel Anykernel
                 rm -rf out/arch/arm64/boot
                 cd Anykernel
-                git checkout master &> /dev/null
+                git checkout pissarro &> /dev/null
                 zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
                 cd ..
 
