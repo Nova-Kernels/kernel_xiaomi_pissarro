@@ -1945,7 +1945,7 @@ CONFIG_MTK_GBE=y
 # CONFIG_MTK_LOWMEM_HINT is not set
 # CONFIG_MTK_SKB_OWNER is not set
 # CONFIG_MTK_CORE_CTL is not set
-CONFIG_MTK_TASK_TURBO=y
+# CONFIG_MTK_TASK_TURBO is not set
 
 #
 # Memory configs
