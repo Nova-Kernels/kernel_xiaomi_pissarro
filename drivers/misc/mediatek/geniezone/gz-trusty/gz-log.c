@@ -136,7 +136,6 @@ static int __init gz_log_context_init(struct reserved_mem *rmem)
 	else
 		glctx.flag = STATIC_NOMAP;
 
-	glctx.flag = STATIC;
 	pr_info("[%s] rmem:%s base(%pa) size(0x%zx)\n",
 		__func__, rmem->name, glctx.paddr, glctx.size);
 	return 0;
