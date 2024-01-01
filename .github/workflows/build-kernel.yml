@@ -38,5 +38,5 @@ jobs:
     - name: Upload kernel
       uses: actions/upload-artifact@v3
       with:
-        name: NoVA-Begonia
+        name: NoVA-Pissarro
         path: NoVA-Pissarro-Kernel.zip
