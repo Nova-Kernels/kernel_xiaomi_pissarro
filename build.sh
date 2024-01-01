@@ -68,9 +68,8 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
         if [ -f "$kernel" ]; then
                 rm *.zip 2>/dev/null
                 # Set kernel name and version
-                SUBREV="4.14.$(cat "Makefile" | grep "SUBLEVEL =" | sed 's/SUBLEVEL = *//g')"
                 REVISION=NoVA-Pissarro
-                ZIPNAME=""$REVISION"-"$SUBREV".zip"
+                ZIPNAME=""$REVISION"-"Kernel".zip"
                 echo -e ""
                 echo -e ""
                 echo -e "********************************************"
