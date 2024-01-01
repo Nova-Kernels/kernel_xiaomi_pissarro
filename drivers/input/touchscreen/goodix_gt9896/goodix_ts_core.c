@@ -1263,7 +1263,7 @@ int goodix_ts_irq_setup(struct goodix_ts_core *core_data)
 	r = devm_request_threaded_irq(&core_data->pdev->dev,
 				core_data->irq, NULL,
 				goodix_ts_threadirq_func,
-				ts_bdata->irq_flags | IRQF_ONESHOT,
+				ts_bdata->irq_flags | IRQF_ONESHOT | IRQF_PERF_AFFINE,
 				GOODIX_CORE_DRIVER_NAME,
 				core_data);
 	if (r < 0) {
@@ -3135,7 +3135,7 @@ static int goodix_ts_probe(struct platform_device *pdev)
 	}
 
 	core_data->event_wq = alloc_workqueue("gtp-event-queue",
-				WQ_UNBOUND | WQ_HIGHPRI | WQ_CPU_INTENSIVE, 1);
+				WQ_HIGHPRI | WQ_UNBOUND | WQ_FREEZABLE | WQ_CPU_INTENSIVE, 1);
 	if (!core_data->event_wq) {
 		ts_err("goodix cannot create event work thread");
 		r = -ENOMEM;
@@ -3143,7 +3143,7 @@ static int goodix_ts_probe(struct platform_device *pdev)
 	}
 
 	core_data->touch_gesture_wq = alloc_workqueue("gtp-touch-gesture",
-					WQ_UNBOUND | WQ_HIGHPRI | WQ_CPU_INTENSIVE, 1);
+					WQ_HIGHPRI | WQ_UNBOUND | WQ_FREEZABLE | WQ_CPU_INTENSIVE, 1);
 	if (!core_data->touch_gesture_wq) {
 		ts_err("goodix cannot create gesture work thread");
 		r = -ENOMEM;
