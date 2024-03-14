@@ -1,40 +1,29 @@
 #!/bin/bash
 #
-# Compile script for Hydrogen kernel
-# Brought to you by rio004 
+# Compile script for NoVA kernel
+# Brought to you by rio004
+# Adapted for NoVA - @Abdul7852
 #
 
 SECONDS=0
 DEVICE="pissarro"
 DATE=$(date '+%Y%m%d-%H%M')
-ZIPNAME="HydrogenKernel-${DEVICE}-${DATE}.zip"
-TC_DIR="$HOME/tc/proton-clang"
+ZIPNAME="NoVA-${DEVICE}-4.14.336-${DATE}.zip"
+toolchain_DIR="$PWD/toolchain/"
 DEFCONFIG="${DEVICE}_user_defconfig"
-
-clone_repo() {
-    local repo_url="$1"
-    local target_dir="$2"
-    if [ ! -d "$target_dir" ]; then
-        echo "Cloning $repo_url to $target_dir..."
-        git clone -q --depth=1 --single-branch "$repo_url" "$target_dir" || {
-            echo "Cloning failed! Aborting..."
-            exit 1
-        }
-    fi
-}
+AK3_DIR="$PWD/Anykernel"
 
 # Ensure the toolchain is available
-clone_repo https://github.com/kdrag0n/proton-clang "$TC_DIR"
-export PATH="$TC_DIR/bin:$PATH"
+export PATH="$toolchain_DIR/bin:$PATH"
 
 # Process options
 CLEAN_BUILD=false
-INCLUDE_KSU=false
+INCLUDE_KSU=true
 for arg in "$@"; do
     case $arg in
         -c) CLEAN_BUILD=true ;;
         -ksu) INCLUDE_KSU=true
-             ZIPNAME="HydrogenKernel-KSU-${DEVICE}-${DATE}.zip"
+             ZIPNAME="NoVA-KSU-${DEVICE}-4.14.336-${DATE}.zip"
              ;;
     esac
 done
@@ -49,11 +38,16 @@ make O=out ARCH=arm64 "$DEFCONFIG"
 echo -e "\nStarting compilation...\n"
 if make -j$(nproc --all) O=out ARCH=arm64 CC="ccache clang" LLVM=1 LLVM_IAS=1 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- Image.gz; then
     echo -e "\nKernel compiled successfully! Zipping up...\n"
-    clone_repo https://github.com/rio004/AnyKernel3 AnyKernel3
-    cp out/arch/arm64/boot/Image.gz AnyKernel3
+
+if [ -d "$AK3_DIR" ]; then
+	echo -e "\nAnykernel found"
+elif ! git clone -q https://github.com/Wahid7852/Anykernel -b pissarro; then
+	echo -e "\nAnyKernel repo not found locally and couldn't clone from GitHub! Aborting..."
+fi
+
+    cp out/arch/arm64/boot/Image.gz Anykernel
     rm -rf *zip out/arch/arm64/boot
-    (cd AnyKernel3 && zip -r9 "../$ZIPNAME" * -x '*.git*' README.md *placeholder)
-    rm -rf AnyKernel3
+    (cd Anykernel && zip -r9 "../$ZIPNAME" * -x '*.git*' README.md *placeholder)
     if [ "$INCLUDE_KSU" = true ]; then
         git restore drivers/{Makefile,Kconfig}
         rm -rf KernelSU drivers/kernelsu
