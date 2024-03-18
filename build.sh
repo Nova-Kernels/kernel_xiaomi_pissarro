@@ -18,18 +18,18 @@ export PATH="$toolchain_DIR/bin:$PATH"
 
 # Process options
 CLEAN_BUILD=false
-INCLUDE_KSU=true
+INCLUDE_KSU=false
 for arg in "$@"; do
     case $arg in
-        -c) CLEAN_BUILD=true ;;
+        -c)   CLEAN_BUILD=true ;;
         -ksu) INCLUDE_KSU=true
-             ZIPNAME="NoVA-KSU-${DEVICE}-4.14.336-${DATE}.zip"
-             ;;
+              ZIPNAME="NoVA-KSU-${DEVICE}-4.14.336-${DATE}.zip"
+              ;;
     esac
 done
 
 [ "$CLEAN_BUILD" = true ] && rm -rf out
-[ "$INCLUDE_KSU" = true ] && echo "Save your stuff!!" && curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+[ "$INCLUDE_KSU" = true ] && echo "Save your stuff!!" && cd KernelSU/ && git pull origin main && cd ../
 
 # Compilation process
 mkdir -p out
@@ -38,6 +38,8 @@ make O=out ARCH=arm64 "$DEFCONFIG"
 echo -e "\nStarting compilation...\n"
 if make -j$(nproc --all) O=out ARCH=arm64 CC="ccache clang" LLVM=1 LLVM_IAS=1 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- Image.gz; then
     echo -e "\nKernel compiled successfully! Zipping up...\n"
+
+
 
 if [ -d "$AK3_DIR" ]; then
 	echo -e "\nAnykernel found"
@@ -48,10 +50,6 @@ fi
     cp out/arch/arm64/boot/Image.gz Anykernel
     rm -rf *zip out/arch/arm64/boot
     (cd Anykernel && zip -r9 "../$ZIPNAME" * -x '*.git*' README.md *placeholder)
-    if [ "$INCLUDE_KSU" = true ]; then
-        git restore drivers/{Makefile,Kconfig}
-        rm -rf KernelSU drivers/kernelsu
-    fi
     echo -e "\nCompleted in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!"
     echo "Zip: $ZIPNAME"
 else
