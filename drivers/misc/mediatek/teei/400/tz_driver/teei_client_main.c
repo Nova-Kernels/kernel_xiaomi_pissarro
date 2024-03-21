@@ -1213,10 +1213,11 @@ static int teei_client_init(void)
 	}
 
 	wake_up_process(teei_log_task);
-#endif
 
 	IMSG_DEBUG("create the sub_thread successfully!\n");
 */
+
+#endif
 
 	teei_config_init();
 
