@@ -13,6 +13,8 @@ source "drivers/input/touchscreen/mediatek/Kconfig"
 
 if INPUT_TOUCHSCREEN
 
+source "drivers/input/touchscreen/xiaomi/Kconfig"
+
 config TOUCHSCREEN_PROPERTIES
 	def_tristate INPUT
 	depends on INPUT
@@ -1256,6 +1258,5 @@ config TOUCHSCREEN_MTK_TOUCH
          To compile this dirver for used touch IC.
 
 source "drivers/input/touchscreen/goodix_gt9896/Kconfig"
-source "drivers/input/touchscreen/xiaomi/Kconfig"
 
 endif

@@ -117,7 +117,7 @@ unsigned int sysctl_sched_child_runs_first __read_mostly;
 unsigned int sysctl_sched_wakeup_granularity		= 1000000UL;
 unsigned int normalized_sysctl_sched_wakeup_granularity	= 1000000UL;
 
-const_debug unsigned int sysctl_sched_migration_cost	= 500000UL;
+const_debug unsigned int sysctl_sched_migration_cost	= 33000UL;
 
 #ifdef CONFIG_SCHED_WALT
 unsigned int sysctl_sched_use_walt_cpu_util = 1;
@@ -2444,8 +2444,7 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
 	struct numa_group *ng;
 	int priv;
 
-	if (!IS_ENABLED(CONFIG_NUMA_BALANCING) ||
-	    !static_branch_likely(&sched_numa_balancing))
+	if (!static_branch_likely(&sched_numa_balancing))
 		return;
 
 	/* for example, ksmd faulting in a user's mm */
@@ -3834,21 +3833,10 @@ util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p, bool task_sleep)
 		return;
 
 	/*
-	 * Reset EWMA on utilization increases, the moving average is used only
-	 * to smooth utilization decreases.
-	 */
-	ue.enqueued = (task_util(p) | UTIL_AVG_UNCHANGED);
-	if (sched_feat(UTIL_EST_FASTUP)) {
-		if (ue.ewma < ue.enqueued) {
-			ue.ewma = ue.enqueued;
-			goto done;
-		}
-	}
-
-	/*
 	 * Skip update of task's estimated utilization when its EWMA is
 	 * already ~1% close to its last activation value.
 	 */
+	ue.enqueued = (task_util(p) | UTIL_AVG_UNCHANGED);
 	last_ewma_diff = ue.enqueued - ue.ewma;
 	if (within_margin(last_ewma_diff, (SCHED_CAPACITY_SCALE / 100)))
 		return;
@@ -3873,7 +3861,6 @@ util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p, bool task_sleep)
 	ue.ewma <<= UTIL_EST_WEIGHT_SHIFT;
 	ue.ewma  += last_ewma_diff;
 	ue.ewma >>= UTIL_EST_WEIGHT_SHIFT;
-done:
 	WRITE_ONCE(p->se.avg.util_est, ue);
 
 	trace_sched_util_est_task(p, &p->se.avg);
@@ -10059,10 +10046,9 @@ static inline void update_sg_lb_stats(struct lb_env *env,
 
 		sgs->group_load += load;
 		sgs->group_util += cpu_util(i);
+		sgs->sum_nr_running += rq->cfs.h_nr_running;
 
 		nr_running = rq->nr_running;
-		sgs->sum_nr_running += nr_running;
-
 		if (nr_running > 1)
 			*overload = true;
 
@@ -11286,15 +11272,6 @@ get_sd_balance_interval(struct sched_domain *sd, int cpu_busy)
 
 	/* scale ms to jiffies */
 	interval = msecs_to_jiffies(interval);
-
-	/*
-	 * Reduce likelihood of busy balancing at higher domains racing with
-	 * balancing at lower domains by preventing their balancing periods
-	 * from being multiples of each other.
-	 */
-	if (cpu_busy)
-		interval -= 1;
-
 	interval = clamp(interval, 1UL, max_load_balance_interval);
 
 	/*
@@ -12176,8 +12153,7 @@ static void task_tick_fair(struct rq *rq, struct task_struct *curr, int queued)
 		entity_tick(cfs_rq, se, queued);
 	}
 
-	if (IS_ENABLED(CONFIG_NUMA_BALANCING) &&
-	    static_branch_unlikely(&sched_numa_balancing))
+	if (static_branch_unlikely(&sched_numa_balancing))
 		task_tick_numa(rq, curr);
 
 	update_misfit_status(curr, rq);
