@@ -35,12 +35,12 @@ config MTK_SYSLIMITER
 	depends on MTK_CPU_CTRL
 	default n
 	help
-  	  Say Y here to enable MediaTeks syslimiter driver.
+	  Say Y here to enable MediaTeks syslimiter driver.
 
 config MTK_PERFMGR_TOUCH_BOOST
 	tristate "touch boost in performance manager"
 	depends on MTK_CPU_CTRL
-	default n
+	default y
 	help
 	  MTK_PERFMGR_TOUCH_BOOST is the kernel config of touch boost
 	  feature designed by MTK, which is a performance improving
