@@ -34,6 +34,7 @@ done
 # Compilation process
 mkdir -p out
 make O=out ARCH=arm64 "$DEFCONFIG"
+exec 2> >(tee -a out/error.log >&2)
 
 echo -e "\nStarting compilation...\n"
 if make -j$(nproc --all) O=out ARCH=arm64 CC="ccache clang" LLVM=1 LLVM_IAS=1 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- Image.gz; then
