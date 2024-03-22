@@ -22,9 +22,9 @@
 			pr_debug("[%s]" format, dev_name(dev), ##__VA_ARGS__)
 
 #define aw_err(format, ...) \
-	                pr_err("[awinic_haptic]" format, ##__VA_ARGS__)
+	                pr_debug("[awinic_haptic]" format, ##__VA_ARGS__)
 #define aw_info(format, ...) \
-			pr_info("[awinic_haptic]" format, ##__VA_ARGS__)
+			pr_debug("[awinic_haptic]" format, ##__VA_ARGS__)
 #define aw_dbg(format, ...) \
 			pr_debug("[awinic_haptic]" format, ##__VA_ARGS__)
 /*********************************************************
