@@ -10,11 +10,11 @@ DEVICE="pissarro"
 DATE=$(date '+%Y%m%d-%H%M')
 ZIPNAME="NoVA-${DEVICE}-4.14.336-${DATE}.zip"
 toolchain_DIR="$PWD/toolchain/"
-DEFCONFIG="${DEVICE}_user_defconfig"
+DEFCONFIG="${DEVICE}_perf_defconfig"
 AK3_DIR="$PWD/Anykernel"
 
 # Ensure the toolchain is available
-export PATH="$toolchain_DIR/bin:$PATH"
+export PATH="$toolchain_DIR/Azure/bin:$PATH"
 
 # Process options
 CLEAN_BUILD=false
