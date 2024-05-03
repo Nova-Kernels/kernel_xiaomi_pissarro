@@ -16,9 +16,5 @@ ifeq ($(CONFIG_MTK_PERFMGR_TOUCH_BOOST),y)
 obj-$(CONFIG_MTK_FPSGO) += user/
 obj-$(CONFIG_MTK_FPSGO_V3) += user/
 
-ifneq ($(CONFIG_MTK_FPSGO_V3),y)
-ifneq ($(CONFIG_MTK_FPSGO),y)
 obj-y += kernel/
-endif
-endif
 endif
